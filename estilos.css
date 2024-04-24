@@ -1,0 +1,42 @@
+/* Estilos para el SVG */
+svg {
+    background-color: #f9f9f9;
+    display: block;
+    margin: 10px auto;
+}
+
+/* Estilos para los polígonos del mapa */
+.mapa {
+    stroke: #000;
+    stroke-width: 1;
+}
+
+/* Estilos para los polígonos al pasar el ratón por encima */
+.mapa:hover {
+    stroke: #bada55;  /* Cambia solo el color del borde */
+    cursor: pointer;
+}
+
+/* Estilos para el texto sobre los polígonos */
+.texto {
+    font-family: 'Arial', sans-serif;
+    font-size: 12px;
+    fill: #333;
+    text-anchor: middle;
+    pointer-events: none; /* Evita que el texto interfiera con el mouseover del mapa */
+    visibility: hidden; /* Nuevo estilo para ocultar el texto inicialmente */
+}
+
+/* Estilo para mostrar el texto cuando el mouse pasa sobre el área */
+.texto.visible {
+    visibility: visible;
+}
+
+/* Estilo para botones activos */
+button.active {
+    background-color: #4CAF50; /* Verde, o cualquier otro color que prefieras */
+    color: white;
+    border: 1px solid #a9e767; /* Un color de borde que combine bien con el color de fondo */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2); /* Sombreado suave para dar sensación de profundidad */
+}
+
