@@ -1,0 +1,90 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:700&display=swap');
+
+body {
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+  background-color: #333;
+  color: #f1ffe3;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+h1 {
+    font-size: 5rem;
+    margin-bottom: 0;
+}
+
+.subtitle {
+    font-size: 1.5rem;
+    margin-top: 0.5rem;
+}
+
+.info {
+    font-size: 1rem;
+    margin: 0.5rem 0;
+}
+
+.logo {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    font-size: 0.8rem;
+}
+
+.long-text{
+    margin: auto;
+    max-width: 1000px; /* O el ancho que prefieras */
+    padding: 0 10px; 
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+  
+button {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    margin: 0 0.5rem;
+    cursor: pointer;
+}
+
+/* En tu archivo info.css */
+.authors-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Crea tres columnas de igual ancho */
+    gap: 1rem; /* Espacio entre las columnas */
+    max-width: 1000px;
+    margin: 2rem auto; /* Centrar el contenedor de autores y darle espacio arriba y abajo */
+    padding: 0 10px;
+}
+
+.author {
+    background-color: #393e46; /* Fondo para cada tarjeta de autor */
+    padding: 1rem;
+    border-radius: 0.5rem; /* Bordes redondeados para las tarjetas */
+    color: #ffffff;
+}
+
+.author-title {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.author-github {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.author-description {
+    font-size: 0.9rem;
+}
