@@ -11,12 +11,19 @@
     <div class="container">
         <div class="map-container">
             <svg width="960" height="600"></svg>
-            <div id="year-buttons-container"></div>
             <div id="info"></div>
         </div>
-        <div id="municipality-list">
-            <h2>Lista de Municipios</h2>
-            <ul></ul>
+        <div class="side-by-side">
+            <div id="year-buttons">
+                <fieldset>
+                <legend>Años</legend>
+                <div id="year-buttons-container"></div>
+                </fieldset>
+            </div>
+            <div id="municipality-list">
+                <h2>Lista de Municipios</h2>
+                <ul></ul>
+            </div>
         </div>
     </div>
     <div id="controls">
@@ -24,8 +31,8 @@
             <legend>Categorías</legend>
             <div id="category-buttons"></div>
         </fieldset>
-        <button id="refresh-button">Refrescar</button>
-        <button id="back-button">Volver a la Página Principal</button>
+        <button id="refresh-button">Actualizar Datos</button>
+        <button id="back-button">Volver</button>
     </div>
     <script src="mapa.js"></script>
 </body>
