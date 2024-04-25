@@ -1,114 +1,148 @@
-/* Estilos para el SVG */
+:root {
+  --button-bg-color: #4CAF50;
+  --button-active-bg-color: #2E8B57;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  display: flex;
+}
+
+.map-container {
+  position: relative;
+  flex: 1;
+}
+
 svg {
-    background-color: #f9f9f9;
-    display: block;
-    margin: 10px auto;
+  background-color: #f9f9f9;
 }
 
-/* Estilos para los polígonos del mapa */
 .mapa {
-    stroke: #000;
-    stroke-width: 1;
+  stroke: #000;
+  stroke-width: 1;
+  transition: fill 0.3s;
 }
 
-/* Estilos para los polígonos al pasar el ratón por encima */
 .mapa:hover {
-    stroke: #bada55;  /* Cambia solo el color del borde */
-    cursor: pointer;
+  stroke: #4CAF50;
+  fill: #4CAF50;
+  cursor: pointer;
 }
 
-/* Estilos para el texto sobre los polígonos */
+.mapa.highlighted {
+  stroke: #4CAF50;
+  fill: #4CAF50;
+}
+
+#municipality-list li.highlighted {
+  background-color: #4CAF50;
+  color: white;
+}
+
 .texto {
-    font-family: 'Arial', sans-serif;
-    font-size: 12px;
-    fill: #333;
-    text-anchor: middle;
-    pointer-events: none; /* Evita que el texto interfiera con el mouseover del mapa */
-    visibility: hidden; /* Nuevo estilo para ocultar el texto inicialmente */
+  font-size: 12px;
+  fill: #333;
+  text-anchor: middle;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
 }
 
-/* Estilo para mostrar el texto cuando el mouse pasa sobre el área */
 .texto.visible {
-    visibility: visible;
+  opacity: 1;
 }
 
-/* Estilo para botones activos */
-button.active {
-    background-color: #4CAF50; /* Verde, o cualquier otro color que prefieras */
-    color: white;
-    border: 1px solid #a9e767; /* Un color de borde que combine bien con el color de fondo */
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2); /* Sombreado suave para dar sensación de profundidad */
+#year-buttons-container {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 10px;
+  border-radius: 5px;
 }
 
-.highlighted {
-    fill: lightblue; /* o cualquier color claro que prefieras */
-  }
-  
-  #municipality-list ul {
-    list-style-type: none; /* Elimina los bullets de la lista */
-    padding: 0; /* Elimina el padding por defecto */
+#info {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 10px;
+  border-radius: 5px;
+  opacity: 0;
+  transition: opacity 0.3s;
 }
 
-#municipality-list li {
-    padding: 5px; /* Agrega un poco de espacio interior */
-    border: 1px solid #ddd; /* Agrega un borde */
-    margin-bottom: 5px; /* Agrega espacio entre elementos de la lista */
-    cursor: pointer; /* Cambia el cursor a una mano para indicar que se puede hacer clic */
+#info.visible {
+  opacity: 1;
 }
 
 #municipality-list {
-    max-height: 80vh; /* 80% de la altura de la ventana del navegador */
-    overflow-y: auto; /* Agregar desplazamiento vertical si es necesario */
-  }
+  width: 200px;
+  padding: 10px;
+  max-height: 600px;
+  overflow-y: auto;
+}
 
-  #year-buttons-container {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background-color: rgba(255, 255, 255, 0.8);
-    padding: 10px;
-    border-radius: 5px;
-  }
-  
-  #year-buttons-container button {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 14px;
-    margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 4px;
-  }
+#municipality-list h2 {
+  margin-top: 0;
+}
 
-  #controls {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 20px;
-  }
-  
-  #poverty-indicators-button {
-    margin-right: 20px;
-  }
-  
-  #category-buttons button {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 14px;
-    margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 4px;
-  }
-  
-  #category-buttons button.active {
-    background-color: #2E8B57;
-  }
+#municipality-list ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+#municipality-list li {
+  padding: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#municipality-list li:hover {
+  background-color: #f0f0f0;
+}
+
+#controls {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+button {
+  background-color: var(--button-bg-color);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+button.active {
+  background-color: var(--button-active-bg-color);
+}
+
+.tooltip {
+  position: absolute;
+  padding: 8px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  pointer-events: none;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+}

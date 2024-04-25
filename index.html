@@ -1,55 +1,32 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Visualización del Mapa GeoJSON</title>
-  <link rel="stylesheet" href="estilos.css">
-  <script src="https://d3js.org/d3.v7.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualización del Mapa GeoJSON de Indicadores de Pobreza en México</title>
+    <link rel="stylesheet" href="estilos.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <body>
-  <div style="display: flex;">
-    <!-- Contenedor del mapa -->
-    <div>
-      <svg width="960" height="600"></svg>
-      <div id="year-buttons-container"></div>
-      <!-- Div para mostrar información de pobreza al pasar el ratón sobre los municipios -->
-      <div id="info" style="padding: 10px; border: 0.5px solid rgb(255, 255, 255); width: 200px; margin: 20px auto; text-align: center;"></div>
+    <div class="container">
+        <div class="map-container">
+            <svg width="960" height="600"></svg>
+            <div id="year-buttons-container"></div>
+            <div id="info"></div>
+        </div>
+        <div id="municipality-list">
+            <h2>Lista de Municipios</h2>
+            <ul></ul>
+        </div>
     </div>
-    <!-- Lista de municipios -->
-    <div id="municipality-list" style="max-height: 80vh; overflow-y: auto;">
-      <ul></ul>
+    <div id="controls">
+        <fieldset>
+            <legend>Categorías</legend>
+            <div id="category-buttons"></div>
+        </fieldset>
+        <button id="refresh-button">Refrescar</button>
+        <button id="back-button">Volver a la Página Principal</button>
     </div>
-  </div>
-  <!-- Botones para elegir las categorías -->
-  <div id="controls">
-    <div id="poverty-indicators-button">
-      <button>Indicadores de Pobreza</button>
-    </div>
-    <div id="category-buttons">
-      <button data-category="Población">Población</button>
-      <button data-category="Población en situación de pobreza">Pobreza</button>
-      <button data-category="Población con ingreso inferior a la línea de pobreza por ingresos">Ingreso Bajo</button>
-      <button data-category="Población con carencia por rezago educativo">Rezago Educativo</button>
-      <button data-category="Población con carencia por acceso a los servicios de salud">Carencia por acceso a los Servicios de Salud</button>
-      <button data-category="Población con carencia por acceso a la seguridad social">Carencia por acceso a la Seguridad Social</button>
-      <button data-category="Población con carencia por calidad y espacios de la vivienda">Carencia por Calidad y Espacios de la Vivienda</button>
-      <button data-category="Población con carencia por acceso a los servicios básicos en la vivienda">Carencia a los servicios básicos en la Vivienda</button>
-      <button data-category="Población con carencia por acceso a la alimentación">Carencia por acceso a la Alimentación</button>
-    </div>
-    <div id="refresh-button">
-      <button>Refrescar</button>
-    </div>
-    <!-- Botón para volver a la página principal -->
-    <button id="backButton">Volver a la Página Principal</button>
-  </div>
-  <script src="mapa.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // Código para volver a la página principal
-      document.getElementById('backButton').addEventListener('click', function() {
-        window.location.href = 'principal.html'; // Asegúrate de que el nombre del archivo sea correcto
-      });
-    });
-  </script>
+    <script src="mapa.js"></script>
 </body>
 </html>
