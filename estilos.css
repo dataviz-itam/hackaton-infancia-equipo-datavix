@@ -55,3 +55,60 @@ button.active {
     margin-bottom: 5px; /* Agrega espacio entre elementos de la lista */
     cursor: pointer; /* Cambia el cursor a una mano para indicar que se puede hacer clic */
 }
+
+#municipality-list {
+    max-height: 80vh; /* 80% de la altura de la ventana del navegador */
+    overflow-y: auto; /* Agregar desplazamiento vertical si es necesario */
+  }
+
+  #year-buttons-container {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 10px;
+    border-radius: 5px;
+  }
+  
+  #year-buttons-container button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+
+  #controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  #poverty-indicators-button {
+    margin-right: 20px;
+  }
+  
+  #category-buttons button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  #category-buttons button.active {
+    background-color: #2E8B57;
+  }

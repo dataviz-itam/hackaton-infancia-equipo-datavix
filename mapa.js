@@ -49,7 +49,7 @@ Promise.all([
     }).on("click", function(event, d) {
         const cve_mun = d.properties.CVE_MUN;
         const munData = dataMap.get(cve_mun);
-        if (munData) { 
+        if (munData) {
             const key = `${selectedCategory} ${selectedYear}`;
             const value = munData[key];
             const isPopulation = selectedCategory === "Población"; // Comprobar si es la categoría Población
@@ -87,10 +87,48 @@ Promise.all([
     });
 
     // Manejadores de eventos para los botones de año
-    d3.selectAll("#year-buttons button").on("click", function() {
-        selectedYear = d3.select(this).attr("data-year");
-        d3.selectAll("#year-buttons button").classed("active", false);
-        d3.select(this).classed("active", true);
-        updateMap();
+    d3.select("#year-buttons-container")
+        .selectAll("button")
+        .data(["2010", "2015", "2020"])
+        .enter()
+        .append("button")
+        .text(d => "Año " + d)
+        .attr("data-year", d => d)
+        .on("click", function() {
+            selectedYear = d3.select(this).attr("data-year");
+            d3.selectAll("#year-buttons-container button").classed("active", false);
+            d3.select(this).classed("active", true);
+            updateMap();
+        });
+// Crear los botones de categoría dinámicamente
+const categoryButtons = [
+    "Población",
+    "Población en situación de pobreza",
+    "Población con ingreso inferior a la línea de pobreza por ingresos",
+    "Población con carencia por rezago educativo",
+    "Población con carencia por acceso a los servicios de salud",
+    "Población con carencia por acceso a la seguridad social",
+    "Población con carencia por calidad y espacios de la vivienda",
+    "Población con carencia por acceso a los servicios básicos en la vivienda",
+    "Población con carencia por acceso a la alimentación"
+  ];
+  
+  const categoryButtonsContainer = d3.select("#category-buttons");
+  
+  categoryButtonsContainer
+    .selectAll("button")
+    .data(categoryButtons)
+    .enter()
+    .append("button")
+    .text(d => d)
+    .attr("data-category", d => d)
+    .on("click", function() {
+      selectedCategory = d3.select(this).attr("data-category");
+      d3.selectAll("#category-buttons button").classed("active", false);
+      d3.select(this).classed("active", true);
+      updateMap();
     });
+
+
+
 });
