@@ -40,3 +40,18 @@ button.active {
     box-shadow: 0 2px 4px rgba(0,0,0,0.2); /* Sombreado suave para dar sensación de profundidad */
 }
 
+.highlighted {
+    fill: lightblue; /* o cualquier color claro que prefieras */
+  }
+  
+  #municipality-list ul {
+    list-style-type: none; /* Elimina los bullets de la lista */
+    padding: 0; /* Elimina el padding por defecto */
+}
+
+#municipality-list li {
+    padding: 5px; /* Agrega un poco de espacio interior */
+    border: 1px solid #ddd; /* Agrega un borde */
+    margin-bottom: 5px; /* Agrega espacio entre elementos de la lista */
+    cursor: pointer; /* Cambia el cursor a una mano para indicar que se puede hacer clic */
+}

@@ -4,12 +4,12 @@ body {
   margin: 0;
   font-family: 'Montserrat', sans-serif;
   background-color: #333;
-  color: #fff;
+  color: #f1ffe3;
 }
 
 .container {
     background-image: url('niños-niñas.png');
-    background-size: 500px auto; /* Ancho de 800px y alto automático */
+    background-size: 350px auto; /* Ancho de 800px y alto automático */
     background-position: center 50px; /* Cambiado 'top' por '100px' */
     background-repeat: no-repeat; /* Evita que la imagen se repita */
     height: 100vh;
