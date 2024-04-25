@@ -21,28 +21,9 @@ Promise.all([
         .enter()
         .append("path")
         .attr("d", pathGenerator)
-        .attr("class", "mapa")
-        .on("mouseover", function(event, d) {
-            d3.select(this).classed("highlighted", true);
-            d3.select("#info").text(d.properties.Municipio || d.properties.NOMGEO).style('display', 'block');
-        })
-        .on("mouseout", function() {
-            d3.select(this).classed("highlighted", false);
-            d3.select("#info").text('').style('display', 'none');
-        })
-        .on("click", function(event, d) {
-            const cve_mun = d.properties.CVE_MUN;
-            const munData = dataMap.get(cve_mun);
-            if (munData) { 
-                const key = `${selectedCategory} ${selectedYear}`;
-                const value = munData[key];
-                const info = `${selectedCategory} en ${munData.Municipio}: ${value}%`;
-                d3.select("#info").html(info).style('display', 'block');
-            } else {
-                d3.select("#info").text('Información no disponible');
-            }
-        });
+        .attr("class", "mapa");
 
+    // Función para actualizar el mapa con los colores correspondientes a los datos
     function updateMap() {
         const key = `${selectedCategory} ${selectedYear}`;
         paths.transition()
@@ -55,7 +36,32 @@ Promise.all([
             });
     }
 
-    // Añadir la lista de municipios al lado del mapa
+    // Llamar a updateMap inmediatamente para aplicar los valores iniciales
+    updateMap();
+
+    // Eventos para los elementos del mapa
+    paths.on("mouseover", function(event, d) {
+        d3.select(this).classed("highlighted", true);
+        d3.select("#info").text(d.properties.Municipio || d.properties.NOMGEO).style('display', 'block');
+    }).on("mouseout", function() {
+        d3.select(this).classed("highlighted", false);
+        d3.select("#info").text('').style('display', 'none');
+    }).on("click", function(event, d) {
+        const cve_mun = d.properties.CVE_MUN;
+        const munData = dataMap.get(cve_mun);
+        if (munData) { 
+            const key = `${selectedCategory} ${selectedYear}`;
+            const value = munData[key];
+            const isPopulation = selectedCategory === "Población"; // Comprobar si es la categoría Población
+            const formattedValue = isPopulation ? value : `${value}%`; // Decidir si añadir el símbolo de porcentaje
+            const info = `${selectedCategory} en ${munData.Municipio}: ${formattedValue}`;
+            d3.select("#info").html(info).style('display', 'block');
+        } else {
+            d3.select("#info").text('Información no disponible');
+        }
+    });
+
+    // Eventos para los elementos de la lista de municipios
     const listContainer = d3.select('#municipality-list ul');
     listContainer.selectAll('li')
         .data(csvData)
@@ -63,20 +69,16 @@ Promise.all([
         .append('li')
         .text(d => d.Municipio)
         .on('click', function(event, d) {
-            const key = `${selectedCategory} ${selectedYear}`;  // Ahora esto reflejará la selección dinámica
-            const info = `${selectedCategory} en ${d.Municipio}: ${d[key]}%`;
+            const key = `${selectedCategory} ${selectedYear}`;
+            const isPopulation = selectedCategory === "Población"; // Comprobar si es la categoría Población
+            const value = d[key];
+            const formattedValue = isPopulation ? value : `${value}%`; // Decidir si añadir el símbolo de porcentaje
+            const info = `${selectedCategory} en ${d.Municipio}: ${formattedValue}`;
             d3.select("#info").html(info).style('display', 'block');
             paths.classed('highlighted', p => p.properties.CVE_MUN === d.CVE_MUN);
         });
 
-    // Manejadores de eventos para los botones de año y categoría
-    d3.selectAll("#year-buttons button").on("click", function() {
-        selectedYear = d3.select(this).attr("data-year");
-        d3.selectAll("#year-buttons button").classed("active", false);
-        d3.select(this).classed("active", true);
-        updateMap();
-    });
-
+    // Manejadores de eventos para los botones de categoría
     d3.selectAll("#category-buttons button").on("click", function() {
         selectedCategory = d3.select(this).attr("data-category");
         d3.selectAll("#category-buttons button").classed("active", false);
@@ -84,6 +86,11 @@ Promise.all([
         updateMap();
     });
 
-    console.log("Selected Category:", selectedCategory);
-    console.log("Selected Year:", selectedYear);
+    // Manejadores de eventos para los botones de año
+    d3.selectAll("#year-buttons button").on("click", function() {
+        selectedYear = d3.select(this).attr("data-year");
+        d3.selectAll("#year-buttons button").classed("active", false);
+        d3.select(this).classed("active", true);
+        updateMap();
+    });
 });
