@@ -1,5 +1,3 @@
-//mapa antes de agregar zoom, jala al centavo 12.03 am
-
 // Variables para mantener el estado de los filtros
 let selectedCategory = "Población"; // Valor predeterminado
 let selectedYear = "2020"; // Valor predeterminado
@@ -11,9 +9,43 @@ Promise.all([
 ]).then(function([geojson, csvData]) {
     const dataMap = new Map(csvData.map(row => [row.CVE_MUN, row]));
 
-    const svg = d3.select("svg");
-    const projection = d3.geoMercator().fitSize([960, 600], geojson);
+    const width = 960;
+    const height = 600;
+
+    const zoom = d3.zoom()
+        .scaleExtent([1, 8])
+        .on("zoom", zoomed);
+
+    const svg = d3.select("svg")
+        .attr("viewBox", [0, 0, width, height])
+        .attr("width", width)
+        .attr("height", height)
+        .attr("style", "max-width: 100%; height: auto;")
+        .on("click", reset);
+
+    const projection = d3.geoMercator().fitSize([width, height], geojson);
     const pathGenerator = d3.geoPath().projection(projection);
+
+    const g = svg.append("g");
+
+    const categoryMap = {
+        "Población": "Población",
+        "Pobreza": "Población en situación de pobreza",
+        "Ingresos": "Población con ingreso inferior a la línea de pobreza por ingresos",
+        "Educación": "Población con carencia por rezago educativo",
+        "Salud": "Población con carencia por acceso a los servicios de salud",
+        "Seg. Social": "Población con carencia por acceso a la seguridad social",
+        "Vivienda": "Población con carencia por calidad y espacios de la vivienda",
+        "Servicios": "Población con carencia por acceso a los servicios básicos en la vivienda",
+        "Alimentación": "Población con carencia por acceso a la alimentación"
+    };
+
+    const categoryMapInverse = {};
+    for (const key in categoryMap) {
+        categoryMapInverse[categoryMap[key]] = key;
+    }
+
+    const categoryButtons = Object.keys(categoryMap);
 
     let minValue, maxValue;
     const updateMinMaxValues = () => {
@@ -23,17 +55,16 @@ Promise.all([
 
     const colorScale = d3.scaleSequential(d3.interpolateBlues);
 
-    const paths = svg.selectAll("path")
+    const paths = g.selectAll("path")
         .data(geojson.features)
         .enter()
         .append("path")
         .attr("d", pathGenerator)
-        .attr("class", "mapa");
+        .attr("class", "mapa")
+        .on("click", clicked);
 
-    const tooltip = d3.select("body")
-    .append("div")
-    .attr("class", "tooltip")
-    .style("opacity", 0);
+    paths.append("title")
+        .text(d => d.properties.Municipio || d.properties.NOMGEO);
 
     function updateMap() {
         colorScale.domain([minValue, maxValue]);
@@ -47,78 +78,38 @@ Promise.all([
                 const value = munData ? munData[key] : 0;
                 return colorScale(value);
             });
-
-        // Actualizar el cuadro de información al cambiar el año
-        const selectedMunicipality = d3.select('.mapa.highlighted').data()[0];
-        if (selectedMunicipality) {
-            showInfo(selectedMunicipality);
-        } else {
-            hideInfo();
-        }
     }
 
     updateMinMaxValues();
     updateMap();
 
-    paths.on("mouseover", function(event, d) {
-        const cve_mun = d.properties.CVE_MUN;
-        d3.selectAll(".mapa").classed("highlighted", false);
-        d3.selectAll("#municipality-list li").classed("highlighted", false);
-        d3.select(this).classed("highlighted", true);
-        d3.select(`#municipality-list li[data-cve="${cve_mun}"]`).classed('highlighted', true);
-        showMunicipalityName(d.properties.Municipio || d.properties.NOMGEO, event);
-    }).on("mouseout", function() {
-        d3.selectAll(".mapa").classed("highlighted", false);
-        d3.selectAll("#municipality-list li").classed("highlighted", false);
-        hideMunicipalityName();
-    }).on("click", function(event, d) {
-        showInfo(d);
-    });
-
     const listContainer = d3.select('#municipality-list ul');
     
     listContainer.selectAll('li')
-    .data(csvData)
-    .enter()
-    .append('li')
-    .attr('data-cve', d => d.CVE_MUN)
-    .text(d => d.Municipio)
-    .on('mouseover', function(event, d) {
-        const cve_mun = d.CVE_MUN;
-        d3.selectAll(".mapa").classed("highlighted", false);
-        d3.selectAll("#municipality-list li").classed("highlighted", false);
-        paths.filter(p => p.properties.CVE_MUN === cve_mun).classed('highlighted', true);
-        d3.select(this).classed('highlighted', true);
-        showMunicipalityName(d.Municipio, event);
-    })
-    .on('mouseout', function() {
-        d3.selectAll(".mapa").classed("highlighted", false);
-        d3.selectAll("#municipality-list li").classed("highlighted", false);
-        hideMunicipalityName();
-    })
-    .on('click', function(event, d) {
-        const cve_mun = d.CVE_MUN;
-        const munData = dataMap.get(cve_mun);
-        if (munData) {
-            showInfo({ properties: { CVE_MUN: cve_mun, Municipio: munData.Municipio } });
-        } else {
-            hideInfo();
-        }
-        paths.filter(p => p.properties.CVE_MUN === cve_mun).classed('highlighted', true);
-        d3.select(this).classed('highlighted', true);
-    });
-
-    const categoryButtons = [
-        "Población",
-        "Población en situación de pobreza",
-        "Población con ingreso inferior a la línea de pobreza por ingresos",
-        "Población con carencia por rezago educativo",
-        "Población con carencia por acceso a los servicios de salud",
-        "Población con carencia por acceso a la seguridad social",
-        "Población con carencia por calidad y espacios de la vivienda",
-        "Población con carencia por acceso a los servicios básicos en la vivienda",
-        "Población con carencia por acceso a la alimentación"
-    ];
+        .data(csvData)
+        .enter()
+        .append('li')
+        .attr('data-cve', d => d.CVE_MUN)
+        .text(d => d.Municipio)
+        .on('mouseover', function(event, d) {
+            const cve_mun = d.CVE_MUN;
+            paths.filter(p => p.properties.CVE_MUN === cve_mun).classed('highlighted', true);
+            d3.select(this).classed('highlighted', true);
+        })
+        .on('mouseout', function() {
+            paths.classed("highlighted", false);
+            d3.selectAll("#municipality-list li").classed("highlighted", false);
+        })
+        .on('click', function(event, d) {
+            const cve_mun = d.CVE_MUN;
+            const munData = dataMap.get(cve_mun);
+            if (munData) {
+                showInfo({ properties: { CVE_MUN: cve_mun, Municipio: munData.Municipio } });
+            } else {
+                hideInfo();
+            }
+            paths.filter(p => p.properties.CVE_MUN === cve_mun).dispatch('click');
+        });
 
     const categoryButtonsContainer = d3.select("#category-buttons");
 
@@ -130,7 +121,7 @@ Promise.all([
         .text(d => d)
         .attr("data-category", d => d)
         .on("click", function() {
-            selectedCategory = d3.select(this).attr("data-category");
+            selectedCategory = categoryMap[d3.select(this).attr("data-category")];
             d3.selectAll("#category-buttons button").classed("active", false);
             d3.select(this).classed("active", true);
             updateMinMaxValues();
@@ -152,34 +143,97 @@ Promise.all([
             updateMap();
         });
 
-    function showInfo(d) {
-        const cve_mun = d.properties.CVE_MUN;
-        const munData = dataMap.get(cve_mun);
-        if (munData) {
-            const key = `${selectedCategory} ${selectedYear}`;
-            const value = munData[key];
-            const isPopulation = selectedCategory === "Población";
-            const formattedValue = isPopulation ? value : `${value}%`;
-            const info = `${selectedCategory} en ${munData.Municipio} (${selectedYear}): ${formattedValue}`;
-            d3.select("#info").html(info).classed('visible', true);
-        } else {
-            hideInfo();
+        function showInfo(d) {
+            const cve_mun = d.properties.CVE_MUN;
+            const munData = dataMap.get(cve_mun);
+            if (munData) {
+                const key = `${selectedCategory} ${selectedYear}`;
+                const value = munData[key];
+                const isPopulation = categoryMapInverse[selectedCategory] === "Población";
+                let formattedValue;
+                let unit;
+                if (isPopulation) {
+                    formattedValue = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    unit = "habitantes";
+                } else {
+                    formattedValue = `${Math.round(value)}%`;
+                    unit = "";
+                }
+                const info = `${categoryMap[categoryMapInverse[selectedCategory]]} en ${munData.Municipio} (${selectedYear}): ${formattedValue} ${unit}`;
+        
+                const centroid = pathGenerator.centroid(d);
+                const x = centroid[0];
+                const y = centroid[1];
+        
+                const dialog = d3.select("svg")
+                    .append("g")
+                    .attr("class", "dialog")
+                    .attr("transform", `translate(${x}, ${y})`);
+        
+                const rect = dialog.append("rect")
+                    .attr("rx", 10)
+                    .attr("ry", 10)
+                    .attr("fill", "white")
+                    .attr("stroke", "black")
+                    .attr("stroke-width", 2);
+        
+                const text = dialog.append("text")
+                    .attr("x", 10)
+                    .attr("y", 20)
+                    .text(info);
+        
+                const bbox = text.node().getBBox();
+                rect.attr("width", bbox.width + 20)
+                    .attr("height", bbox.height + 20);
+        
+                dialog.append("polygon")
+                    .attr("points", "0,0 10,-10, 20,0")
+                    .attr("fill", "white")
+                    .attr("stroke", "black")
+                    .attr("stroke-width", 2)
+                    .attr("transform", `translate(${bbox.width / 2 + 10}, ${bbox.height + 20})`);
+            } else {
+                hideInfo();
+            }
         }
-    }
 
     function hideInfo() {
-        d3.select("#info").classed('visible', false);
+    d3.select(".dialog").remove();
+}
+
+    svg.call(zoom);
+
+    function reset() {
+        paths.transition().style("fill", null);
+        svg.transition().duration(750).call(
+            zoom.transform,
+            d3.zoomIdentity,
+            d3.zoomTransform(svg.node()).invert([width / 2, height / 2])
+        );
+        hideInfo(); // Ocultar el diálogo al hacer clic fuera de los polígonos
     }
 
-    function showMunicipalityName(name, event) {
-        tooltip.html(name)
-            .style("left", (event.pageX + 10) + "px")
-            .style("top", (event.pageY - 28) + "px")
-            .style("opacity", 1);
+    function clicked(event, d) {
+        const [[x0, y0], [x1, y1]] = pathGenerator.bounds(d);
+        event.stopPropagation();
+        paths.transition().style("fill", null);
+        d3.select(this).transition().style("fill", "red");
+        svg.transition().duration(750).call(
+            zoom.transform,
+            d3.zoomIdentity
+                .translate(width / 2, height / 2)
+                .scale(Math.min(8, 0.9 / Math.max((x1 - x0) / width, (y1 - y0) / height)))
+                .translate(-(x0 + x1) / 2, -(y0 + y1) / 2),
+            d3.pointer(event, svg.node())
+        );
+        hideInfo(); // Ocultar el diálogo antes de mostrar la nueva información
+        showInfo(d);
     }
-    
-    function hideMunicipalityName() {
-        tooltip.style("opacity", 0);
+
+    function zoomed(event) {
+        const {transform} = event;
+        g.attr("transform", transform);
+        g.attr("stroke-width", 1 / transform.k);
     }
 
     d3.select("#refresh-button").on("click", () => {
@@ -191,6 +245,7 @@ Promise.all([
         d3.select("#year-buttons-container button[data-year='2020']").classed("active", true);
         updateMinMaxValues();
         updateMap();
+        reset();
     });
 
     d3.select("#back-button").on("click", () => {

@@ -1,6 +1,6 @@
 :root {
-  --button-bg-color: #4CAF50;
-  --button-active-bg-color: #2E8B57;
+  --button-bg-color: #000;
+  --button-active-bg-color: #333;
 }
 
 body {
@@ -29,18 +29,18 @@ svg {
 }
 
 .mapa:hover {
-  stroke: #4CAF50;
-  fill: #4CAF50;
+  stroke: #6eff76;
+  fill: #6eff76;
   cursor: pointer;
 }
 
 .mapa.highlighted {
-  stroke: #4CAF50;
-  fill: #4CAF50;
+  stroke: #6eff76;
+  fill: #6eff76;
 }
 
 #municipality-list li.highlighted {
-  background-color: #4CAF50;
+  background-color: #000;
   color: white;
 }
 
@@ -57,13 +57,55 @@ svg {
   opacity: 1;
 }
 
+#year-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 20px;
+}
+
+#year-buttons fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+#year-buttons legend {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
 #year-buttons-container {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background-color: rgba(255, 255, 255, 0.8);
-  padding: 10px;
-  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+}
+
+#year-buttons-container button {
+  background-color: #fff;
+  color: #000;
+  border: 2px solid #ccc;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 30px;
+  transition: border-color 0.3s;
+  text-transform: uppercase;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+#year-buttons-container button:hover {
+  border-color: #000;
+}
+
+#year-buttons-container button.active {
+  background-color: #000;
+  color: #fff;
+  border-color: #000;
 }
 
 #info {
@@ -114,27 +156,32 @@ svg {
   align-items: center;
 }
 
-button {
-  background-color: var(--button-bg-color);
-  color: white;
-  border: none;
-  padding: 8px 16px;
+#controls button {
+  background-color: #fff;
+  color: #000;
+  border: 2px solid #ccc;
+  padding: 10px 20px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
   font-size: 14px;
   margin: 4px 2px;
   cursor: pointer;
-  border-radius: 4px;
-  transition: background-color 0.3s;
+  border-radius: 30px;
+  transition: border-color 0.3s;
+  text-transform: uppercase;
+  font-weight: bold;
+  white-space: nowrap;
 }
 
-button:hover {
-  background-color: #45a049;
+#controls button:hover {
+  border-color: #000;
 }
 
-button.active {
-  background-color: var(--button-active-bg-color);
+#controls button.active {
+  background-color: #000;
+  color: #fff;
+  border-color: #000;
 }
 
 .tooltip {
@@ -146,3 +193,35 @@ button.active {
   font-family: Arial, sans-serif;
   font-size: 14px;
 }
+
+.dialog {
+  pointer-events: none;
+}
+
+.dialog rect {
+  fill: white;
+  stroke: black;
+  stroke-width: 2px;
+}
+
+.dialog text {
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+}
+
+.dialog polygon {
+  fill: white;
+  stroke: black;
+  stroke-width: 2px;
+}
+
+.side-by-side {
+  display: flex;
+  justify-content: space-between;
+}
+
+#year-buttons, #municipality-list {
+  flex: 1;
+  padding: 10px; 
+}
+
