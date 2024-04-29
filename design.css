@@ -1,0 +1,58 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:700&display=swap');
+
+body {
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+  background-color: #333;
+  color: #f1ffe3;
+}
+
+.container {
+    background-image: url('niños-niñas.png');
+    background-size: 350px auto; /* Ancho de 800px y alto automático */
+    background-position: center 50px; /* Cambiado 'top' por '100px' */
+    background-repeat: no-repeat; /* Evita que la imagen se repita */
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+h1 {
+  font-size: 5rem;
+  margin-bottom: 0;
+}
+
+.subtitle {
+  font-size: 1.5rem;
+  margin-top: 0.5rem;
+}
+
+.info {
+  font-size: 1rem;
+  margin: 0.5rem 0;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+button {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  margin: 0 0.5rem;
+  cursor: pointer;
+}
+
+.logo {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  font-size: 0.8rem;
+}

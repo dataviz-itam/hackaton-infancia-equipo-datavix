@@ -1,0 +1,227 @@
+:root {
+  --button-bg-color: #000;
+  --button-active-bg-color: #333;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  display: flex;
+}
+
+.map-container {
+  position: relative;
+  flex: 1;
+}
+
+svg {
+  background-color: #f9f9f9;
+}
+
+.mapa {
+  stroke: #000;
+  stroke-width: 1;
+  transition: fill 0.3s;
+}
+
+.mapa:hover {
+  stroke: #6eff76;
+  fill: #6eff76;
+  cursor: pointer;
+}
+
+.mapa.highlighted {
+  stroke: #6eff76;
+  fill: #6eff76;
+}
+
+#municipality-list li.highlighted {
+  background-color: #000;
+  color: white;
+}
+
+.texto {
+  font-size: 12px;
+  fill: #333;
+  text-anchor: middle;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.texto.visible {
+  opacity: 1;
+}
+
+#year-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 20px;
+}
+
+#year-buttons fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+#year-buttons legend {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+#year-buttons-container {
+  display: flex;
+  flex-direction: column;
+}
+
+#year-buttons-container button {
+  background-color: #fff;
+  color: #000;
+  border: 2px solid #ccc;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 30px;
+  transition: border-color 0.3s;
+  text-transform: uppercase;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+#year-buttons-container button:hover {
+  border-color: #000;
+}
+
+#year-buttons-container button.active {
+  background-color: #000;
+  color: #fff;
+  border-color: #000;
+}
+
+#info {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 10px;
+  border-radius: 5px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+#info.visible {
+  opacity: 1;
+}
+
+#municipality-list {
+  width: 200px;
+  padding: 10px;
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+#municipality-list h2 {
+  margin-top: 0;
+}
+
+#municipality-list ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+#municipality-list li {
+  padding: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#municipality-list li:hover {
+  background-color: #f0f0f0;
+}
+
+#controls {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#controls button {
+  background-color: #fff;
+  color: #000;
+  border: 2px solid #ccc;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 30px;
+  transition: border-color 0.3s;
+  text-transform: uppercase;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+#controls button:hover {
+  border-color: #000;
+}
+
+#controls button.active {
+  background-color: #000;
+  color: #fff;
+  border-color: #000;
+}
+
+.tooltip {
+  position: absolute;
+  padding: 8px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  pointer-events: none;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+}
+
+.dialog {
+  pointer-events: none;
+}
+
+.dialog rect {
+  fill: white;
+  stroke: black;
+  stroke-width: 2px;
+}
+
+.dialog text {
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+}
+
+.dialog polygon {
+  fill: white;
+  stroke: black;
+  stroke-width: 2px;
+}
+
+.side-by-side {
+  display: flex;
+  justify-content: space-between;
+}
+
+#year-buttons, #municipality-list {
+  flex: 1;
+  padding: 10px; 
+}
+

@@ -1,0 +1,27 @@
+/* style.css */
+.bar {
+    fill: steelblue;
+}
+
+.bar:hover {
+    fill: orange;
+}
+
+.axis-label {
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+
+#grafico {
+    width: 960px; /* Este es el ancho de la ventana de visualización a través de la cual se verá el gráfico */
+    overflow-x: scroll; /* Esto activa la barra de desplazamiento horizontal cuando el contenido interno es más ancho */
+    border: 1px solid #ccc; /* Para que puedas ver los límites del contenedor */
+  }
+  
