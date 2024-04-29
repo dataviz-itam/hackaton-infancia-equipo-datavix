@@ -249,6 +249,6 @@ Promise.all([
     });
 
     d3.select("#back-button").on("click", () => {
-        window.location.href = 'principal.html';
+        window.location.href = 'index.html';
     });
 });
